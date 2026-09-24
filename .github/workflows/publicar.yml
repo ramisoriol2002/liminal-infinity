@@ -1,7 +1,4 @@
 name: Publicar el archivo
-
-# Se ejecuta en cada commit a main y regenera index.html a partir de fichas/,
-# despues publica el sitio en GitHub Pages. No hay nada que hacer a mano.
 on:
   push:
     branches: [main]
@@ -22,8 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # Historial completo: el script saca de ahi las fechas de
-          # "ultimos movimientos" de la portada.
           fetch-depth: 0
 
       - name: Generar index.html
