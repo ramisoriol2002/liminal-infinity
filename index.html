@@ -1,0 +1,1128 @@
+<title>Archivo D-7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --desk:#2f6b6b;
+    --desk-2:#245656;
+    --face:#c3c3c3;
+    --face-hi:#ffffff;
+    --face-lo:#818181;
+    --face-lo2:#0a0a0a;
+    --face-text:#0a0a0a;
+    --title-a:#00107b;
+    --title-b:#1083d0;
+    --paper:#f2efe2;
+    --paper-line:#d8d3bf;
+    --ink:#1d1b16;
+    --ink-soft:#5a5548;
+    --stamp:#9e2128;
+    --amber:#8a6412;
+    --green:#1c6b3a;
+    --sel:#00107b;
+    --sel-text:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --desk:#16302f; --desk-2:#0e2120;
+      --face:#5a5a5a; --face-hi:#8d8d8d; --face-lo:#2c2c2c; --face-lo2:#000000; --face-text:#f0efe9;
+      --title-a:#000a52; --title-b:#0b4f7d;
+      --paper:#22201b; --paper-line:#3a362d; --ink:#e7e3d5; --ink-soft:#a39d8a;
+      --stamp:#d1565c; --amber:#d3a53f; --green:#5fb37f; --sel:#1a3fae; --sel-text:#ffffff;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --desk:#16302f; --desk-2:#0e2120;
+    --face:#5a5a5a; --face-hi:#8d8d8d; --face-lo:#2c2c2c; --face-lo2:#000000; --face-text:#f0efe9;
+    --title-a:#000a52; --title-b:#0b4f7d;
+    --paper:#22201b; --paper-line:#3a362d; --ink:#e7e3d5; --ink-soft:#a39d8a;
+    --stamp:#d1565c; --amber:#d3a53f; --green:#5fb37f; --sel:#1a3fae; --sel-text:#ffffff;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100%;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 1px, transparent 1px 3px),
+      linear-gradient(160deg, var(--desk), var(--desk-2));
+    font-family: Tahoma, Verdana, "MS Sans Serif", Geneva, sans-serif;
+    font-size:12px;
+    color:var(--face-text);
+    padding:18px 16px;
+  }
+  .mono{font-family:"Courier Prime", "Courier New", Courier, monospace;}
+
+  .out{
+    border:2px solid;
+    border-color: var(--face-hi) var(--face-lo2) var(--face-lo2) var(--face-hi);
+    box-shadow: inset 1px 1px 0 0 var(--face), inset -1px -1px 0 0 var(--face-lo);
+    background:var(--face);
+  }
+  .in{
+    border:2px solid;
+    border-color: var(--face-lo) var(--face-hi) var(--face-hi) var(--face-lo);
+    box-shadow: inset 1px 1px 0 0 var(--face-lo2), inset -1px -1px 0 0 var(--face);
+  }
+
+  .window{ max-width:1000px; margin:0 auto; }
+
+  .titlebar{
+    display:flex; align-items:center; gap:6px;
+    margin:3px; padding:3px 3px 3px 5px;
+    background:linear-gradient(90deg, var(--title-a), var(--title-b));
+    color:#fff;
+  }
+  .titlebar h1{
+    font-size:12px; margin:0; font-weight:700; letter-spacing:.02em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .titlebar .spacer{flex:1;}
+  .tbtn{
+    width:18px; height:16px; display:grid; place-items:center;
+    font-size:10px; font-weight:700; line-height:1; color:var(--face-text);
+    border:2px solid; border-color:var(--face-hi) var(--face-lo2) var(--face-lo2) var(--face-hi);
+    background:var(--face); cursor:default;
+  }
+
+  .menubar{display:flex; gap:2px; padding:2px 4px; border-bottom:1px solid var(--face-lo); flex-wrap:wrap;}
+  .menubar span{padding:2px 7px;}
+  .menubar span u{text-decoration:underline;}
+  .menubar span:hover{background:var(--sel); color:var(--sel-text);}
+
+  .toolbar{display:flex; align-items:center; gap:6px; padding:5px 6px; flex-wrap:wrap;}
+  .tool{
+    display:flex; align-items:center; gap:5px; padding:3px 8px;
+    background:var(--face); cursor:pointer; color:var(--face-text);
+    border:2px solid; border-color:var(--face-hi) var(--face-lo2) var(--face-lo2) var(--face-hi);
+    font:inherit;
+  }
+  .tool:active, .tool[aria-pressed="true"]{border-color:var(--face-lo2) var(--face-hi) var(--face-hi) var(--face-lo2);}
+  .tool[disabled]{color:var(--face-lo); cursor:default;}
+  .views{display:flex; align-items:center; gap:3px;}
+  .views > span{opacity:.85; margin-right:2px;}
+  .addr{flex:1; min-width:170px; display:flex; align-items:center; gap:6px;}
+  .addr label{opacity:.85;}
+  .addr .field{flex:1; background:var(--paper); color:var(--ink); padding:3px 6px; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+  .body{display:grid; grid-template-columns:196px 1fr; gap:0; margin:0 6px 6px;}
+  .body[data-home="true"]{grid-template-columns:1fr;}
+  .body[data-home="true"] .tree{display:none;}
+
+  .tree{background:var(--paper); color:var(--ink); padding:8px 6px; overflow:auto; max-height:70vh;}
+  .tree h2{font-size:11px; margin:0 0 6px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft);}
+  .tree ul{list-style:none; margin:0; padding:0;}
+  .tree ul ul{padding-left:14px; border-left:1px dotted var(--paper-line); margin-left:7px;}
+  .tree li{margin:1px 0;}
+  .tree .row{display:flex; align-items:center; gap:3px;}
+  .tree .twist{
+    width:14px; height:14px; flex:0 0 auto; display:grid; place-items:center;
+    font-family:"Courier Prime", monospace; font-size:11px; line-height:1;
+    background:var(--paper); color:var(--ink); cursor:pointer;
+    border:1px solid var(--ink-soft); padding:0;
+  }
+  .tree .twist.empty{visibility:hidden;}
+  .tree .lnk{
+    display:flex; align-items:center; gap:6px; flex:1; text-align:left;
+    background:none; border:0; font:inherit; color:inherit; padding:2px 4px; cursor:pointer;
+    min-width:0;
+  }
+  .tree .lnk span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .tree .lnk:hover{text-decoration:underline;}
+  .tree .lnk[aria-current="true"]{background:var(--sel); color:var(--sel-text);}
+  .tree .rule{border-top:1px dashed var(--paper-line); margin:10px 2px;}
+
+  .pane{background:var(--paper); color:var(--ink); min-height:400px; overflow:auto;}
+
+  /* ---- portada ---- */
+  .home{padding:24px 26px 28px; max-width:74ch;}
+  .home .kicker{color:var(--ink-soft); letter-spacing:.24em; font-size:11px; margin-bottom:6px;}
+  .home h2{font-size:30px; margin:0 0 2px; letter-spacing:.04em; text-wrap:balance;}
+  .home .sub{color:var(--ink-soft); margin:0 0 18px; font-size:13px;}
+  .home p{line-height:1.65; margin:0 0 1em; max-width:62ch;}
+  .home .seal{
+    float:right; margin:0 0 12px 18px; width:120px; height:120px; display:grid; place-items:center;
+    border:3px double var(--stamp); border-radius:50%; color:var(--stamp);
+    text-align:center; font-size:10px; letter-spacing:.16em; line-height:1.5; padding:10px;
+    transform:rotate(-4deg);
+  }
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:8px; margin:20px 0 6px;}
+  .card{
+    display:flex; gap:10px; align-items:flex-start; text-align:left; padding:10px 12px;
+    background:var(--face); color:var(--face-text); font:inherit; cursor:pointer;
+    border:2px solid; border-color:var(--face-hi) var(--face-lo2) var(--face-lo2) var(--face-hi);
+  }
+  .card:active{border-color:var(--face-lo2) var(--face-hi) var(--face-hi) var(--face-lo2);}
+  .card b{display:block; margin-bottom:2px;}
+  .card small{opacity:.8; line-height:1.4; display:block;}
+  .home .hr{border-top:1px dashed var(--paper-line); margin:22px 0 14px;}
+  .home h3{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 8px;}
+  .recent{list-style:none; margin:0; padding:0;}
+  .recent li{border-bottom:1px solid var(--paper-line);}
+  .recent button{
+    display:flex; gap:10px; align-items:baseline; width:100%; text-align:left;
+    background:none; border:0; font:inherit; color:inherit; padding:5px 2px; cursor:pointer;
+  }
+  .recent button:hover{background:color-mix(in srgb, var(--sel) 12%, transparent);}
+  .recent .d{color:var(--ink-soft); font-size:11px; flex:0 0 auto;}
+  .recent .t{flex:1;}
+
+  /* ---- vista de carpetas ---- */
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(116px,1fr)); gap:4px; padding:12px;}
+  .item{
+    display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 4px;
+    background:none; border:1px solid transparent; font:inherit; color:inherit; cursor:pointer; text-align:center;
+  }
+  .item:hover{border-color:var(--paper-line);}
+  .item .nm{line-height:1.25;}
+  .item .ct{color:var(--ink-soft); font-size:11px;}
+
+  /* ---- vista de detalles ---- */
+  table{border-collapse:collapse; width:100%; font-size:12px;}
+  thead th{
+    position:sticky; top:0; background:var(--face); color:var(--face-text);
+    text-align:left; font-weight:700; padding:4px 8px; white-space:nowrap;
+    border-right:1px solid var(--face-lo); border-bottom:1px solid var(--face-lo);
+  }
+  tbody td{padding:3px 8px; border-bottom:1px solid var(--paper-line); white-space:nowrap;}
+  tbody tr{cursor:pointer;}
+  tbody tr:hover td{background:color-mix(in srgb, var(--sel) 12%, transparent);}
+  .num{font-variant-numeric:tabular-nums;}
+  .wrap{overflow-x:auto;}
+
+  /* ---- vista lista / desplegable ---- */
+  .acc{padding:10px 12px 20px;}
+  .acc section{margin-bottom:6px;}
+  .acc .head{
+    display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+    padding:5px 8px; font:inherit; cursor:pointer;
+    background:var(--face); color:var(--face-text);
+    border:2px solid; border-color:var(--face-hi) var(--face-lo2) var(--face-lo2) var(--face-hi);
+  }
+  .acc .head b{flex:1;}
+  .acc .head .ct{opacity:.8; font-weight:400;}
+  .acc .head .tw{font-family:"Courier Prime",monospace;}
+  .acc .list{list-style:none; margin:0; padding:2px 0 8px 8px;}
+  .acc .list li{border-bottom:1px solid var(--paper-line);}
+  .acc .list button{
+    display:flex; gap:10px; align-items:baseline; width:100%; text-align:left;
+    background:none; border:0; font:inherit; color:inherit; padding:5px 6px; cursor:pointer;
+  }
+  .acc .list button:hover{background:color-mix(in srgb, var(--sel) 12%, transparent);}
+  .acc .list .id{flex:0 0 auto; min-width:11ch;}
+  .acc .list .nm{flex:1;}
+
+  .tag{display:inline-block; padding:0 5px; border:1px solid currentColor; font-size:11px; letter-spacing:.04em;}
+  .t-ver{color:var(--green);}
+  .t-sin{color:var(--amber);}
+  .t-dis{color:var(--stamp);}
+
+  /* ---- expediente ---- */
+  .file{padding:16px 18px 24px; max-width:66ch;}
+  .file .stamp{
+    display:inline-block; border:3px double var(--stamp); color:var(--stamp);
+    padding:4px 12px; font-weight:700; letter-spacing:.22em; transform:rotate(-3deg);
+    margin-bottom:14px; font-size:13px;
+  }
+  .file h2{font-size:18px; margin:.2em 0 .1em; text-wrap:balance;}
+  .file .desig{color:var(--ink-soft); letter-spacing:.14em; margin-bottom:14px;}
+  .fields{display:grid; grid-template-columns:auto 1fr; gap:3px 14px; margin:0 0 16px; font-size:12px;}
+  .fields dt{color:var(--ink-soft); letter-spacing:.06em;}
+  .fields dd{margin:0;}
+  .file p{line-height:1.6; margin:0 0 .9em;}
+  .redact{background:var(--ink); color:transparent; user-select:none; padding:0 .35em; border-radius:1px;}
+  .note{border-left:3px solid var(--amber); padding:6px 10px; background:color-mix(in srgb, var(--amber) 10%, transparent); margin:14px 0;}
+  .sig{margin-top:22px; padding-top:10px; border-top:1px dashed var(--paper-line); color:var(--ink-soft); font-size:11px;}
+
+  .statusbar{display:flex; gap:4px; margin:0 6px 6px;}
+  .statusbar .cell{padding:3px 8px; flex:0 0 auto;}
+  .statusbar .cell:first-child{flex:1;}
+
+  svg.ic{display:block; flex:0 0 auto;}
+  button:focus-visible{outline:1px dotted currentColor; outline-offset:1px;}
+
+  @media (max-width:760px){
+    body{padding:10px 8px;}
+    .body{grid-template-columns:1fr;}
+    .tree{display:none;}
+    .file, .home{padding:14px;}
+    .home h2{font-size:22px;}
+    .home .seal{float:none; margin:0 0 14px;}
+  }
+</style>
+
+<div class="window out">
+  <div class="titlebar">
+    <svg class="ic" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="3" width="14" height="11" fill="#e8c96a" stroke="#4a3a10"/>
+      <path d="M1 3h5l1.5 2H15" fill="none" stroke="#4a3a10"/>
+    </svg>
+    <h1 id="wtitle">Archivo D-7</h1>
+    <span class="spacer"></span>
+    <span class="tbtn" aria-hidden="true">_</span>
+    <span class="tbtn" aria-hidden="true">□</span>
+    <span class="tbtn" aria-hidden="true">✕</span>
+  </div>
+
+  <div class="menubar">
+    <span><u>A</u>rchivo</span><span><u>E</u>dición</span><span><u>V</u>er</span><span>A<u>y</u>uda</span>
+  </div>
+
+  <div class="toolbar">
+    <button class="tool" id="home" type="button">⌂ Inicio</button>
+    <button class="tool" id="back" type="button">◄ Atrás</button>
+    <button class="tool" id="up" type="button">▲ Arriba</button>
+    <div class="addr">
+      <label for="path">Dirección</label>
+      <div class="field in mono" id="path">C:\ARCHIVO\</div>
+    </div>
+    <div class="views" role="group" aria-label="Modo de vista">
+      <span>Ver:</span>
+      <button class="tool" type="button" data-view="icons">Iconos</button>
+      <button class="tool" type="button" data-view="details">Detalles</button>
+      <button class="tool" type="button" data-view="list">Lista</button>
+    </div>
+  </div>
+
+  <div class="body" id="bodyGrid" data-home="true">
+    <nav class="tree in" aria-label="Carpetas">
+      <h2>Carpetas</h2>
+      <ul id="tree"></ul>
+      <div class="rule"></div>
+      <h2>Estado</h2>
+      <p class="mono" style="margin:0;font-size:11px;line-height:1.55">
+        SEMILLA DEL MUNDO<br>
+        <strong>4417-0923-D7</strong><br><br>
+        Toda ficha sin semilla ni sector verificables se archiva como <em>no confirmada</em>.
+      </p>
+    </nav>
+
+    <section class="pane in" id="pane" tabindex="-1" aria-live="polite"></section>
+  </div>
+
+  <div class="statusbar">
+    <div class="cell in" id="count">&nbsp;</div>
+    <div class="cell in">NIVEL DE ACCESO: RESTRINGIDO</div>
+    <div class="cell in mono" id="clock">--:--</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var ICON = {
+    folder: '<svg class="ic" width="32" height="26" viewBox="0 0 32 26" aria-hidden="true"><path d="M1 4h11l3 3h16v17H1z" fill="#e8c96a" stroke="#4a3a10"/><path d="M1 9h30" stroke="#c9a94a"/></svg>',
+    folderSm: '<svg class="ic" width="16" height="13" viewBox="0 0 32 26" aria-hidden="true"><path d="M1 4h11l3 3h16v17H1z" fill="#e8c96a" stroke="#4a3a10"/></svg>',
+    docSm: '<svg class="ic" width="12" height="14" viewBox="0 0 26 30" aria-hidden="true"><path d="M2 1h15l7 7v21H2z" fill="#fbfaf4" stroke="#57534a"/><path d="M17 1v7h7" fill="none" stroke="#57534a"/></svg>',
+    doc: '<svg class="ic" width="26" height="30" viewBox="0 0 26 30" aria-hidden="true"><path d="M2 1h15l7 7v21H2z" fill="#fbfaf4" stroke="#57534a"/><path d="M17 1v7h7" fill="none" stroke="#57534a"/><path d="M6 13h14M6 17h14M6 21h9" stroke="#9a9488"/></svg>'
+  };
+
+  var DATA = {
+  "root": {
+    "path": "C:\\ARCHIVO\\",
+    "folders": [
+      {
+        "id": "niveles",
+        "nm": "NIVELES",
+        "ct": "3 fichas"
+      },
+      {
+        "id": "entidades",
+        "nm": "ENTIDADES",
+        "ct": "1 ficha"
+      },
+      {
+        "id": "informes",
+        "nm": "INFORMES DE CAMPO",
+        "ct": "0 fichas"
+      },
+      {
+        "id": "fotografias",
+        "nm": "FOTOGRAFÍAS",
+        "ct": "0 fichas"
+      },
+      {
+        "id": "sectores",
+        "nm": "SECTORES",
+        "ct": "1 ficha"
+      },
+      {
+        "id": "protocolos",
+        "nm": "PROTOCOLOS",
+        "ct": "1 ficha"
+      }
+    ]
+  },
+  "niveles": {
+    "nm": "NIVELES",
+    "path": "C:\\ARCHIVO\\NIVELES\\",
+    "cols": [
+      "Designación",
+      "Nombre vulgar",
+      "Profundidad",
+      "Registrado",
+      "Estado"
+    ],
+    "rows": [
+      {
+        "id": "lvl-000",
+        "c": [
+          "LVL-000",
+          "El vestíbulo",
+          "0 m",
+          "12.03",
+          "VERIFICADO"
+        ],
+        "st": "ver"
+      },
+      {
+        "id": "lvl-031",
+        "c": [
+          "LVL-031",
+          "Habitaciones de agua",
+          "201 – 388 m",
+          "17.04",
+          "VERIFICADO"
+        ],
+        "st": "ver"
+      },
+      {
+        "id": "lvl-044",
+        "c": [
+          "LVL-044",
+          "El hotel que gira",
+          "390 – 452 m",
+          "28.04",
+          "EN DISPUTA"
+        ],
+        "st": "dis"
+      }
+    ]
+  },
+  "entidades": {
+    "nm": "ENTIDADES",
+    "path": "C:\\ARCHIVO\\ENTIDADES\\",
+    "cols": [
+      "Designación",
+      "Nombre vulgar",
+      "Clase",
+      "Primer avistamiento",
+      "Estado"
+    ],
+    "rows": [
+      {
+        "id": "ent-a-03",
+        "c": [
+          "ENT-A-03",
+          "El de la moqueta",
+          "A",
+          "LVL-001",
+          "VERIFICADO"
+        ],
+        "st": "ver"
+      }
+    ]
+  },
+  "informes": {
+    "nm": "INFORMES DE CAMPO",
+    "path": "C:\\ARCHIVO\\INFORMES DE CAMPO\\",
+    "cols": [
+      "Referencia",
+      "Autor",
+      "Nivel",
+      "Sector",
+      "Estado"
+    ],
+    "rows": []
+  },
+  "fotografias": {
+    "nm": "FOTOGRAFÍAS",
+    "path": "C:\\ARCHIVO\\FOTOGRAFÍAS\\",
+    "cols": [
+      "Archivo",
+      "Nivel",
+      "Sector",
+      "Semilla",
+      "Estado"
+    ],
+    "rows": []
+  },
+  "sectores": {
+    "nm": "SECTORES",
+    "path": "C:\\ARCHIVO\\SECTORES\\",
+    "cols": [
+      "Sector",
+      "Niveles registrados",
+      "Accesos conocidos",
+      "Cobertura",
+      "Estado"
+    ],
+    "rows": [
+      {
+        "id": "sec-00-00",
+        "c": [
+          "(0, 0)",
+          "7 de 9",
+          "4",
+          "82 %",
+          "VERIFICADO"
+        ],
+        "st": "ver"
+      }
+    ]
+  },
+  "protocolos": {
+    "nm": "PROTOCOLOS",
+    "path": "C:\\ARCHIVO\\PROTOCOLOS\\",
+    "cols": [
+      "Referencia",
+      "Asunto",
+      "Obligatorio",
+      "Revisión",
+      "Estado"
+    ],
+    "rows": [
+      {
+        "id": "pr-01",
+        "c": [
+          "PR-01",
+          "Verificación de hallazgos",
+          "SÍ",
+          "4ª",
+          "VERIFICADO"
+        ],
+        "st": "ver"
+      }
+    ]
+  }
+};
+
+  var FILES = {
+  "lvl-000": {
+    "titulo": "El vestíbulo",
+    "desig": "LVL-000",
+    "stamp": "VERIFICADO",
+    "campos": [
+      [
+        "profundidad",
+        "0 m"
+      ],
+      [
+        "registrado",
+        "12.03"
+      ],
+      [
+        "Profundidad",
+        "0 m · referencia del archivo"
+      ],
+      [
+        "Primer registro",
+        "12.03"
+      ],
+      [
+        "Confirmado por",
+        "todos los exploradores"
+      ],
+      [
+        "Sectores conocidos",
+        "(0, 0)"
+      ],
+      [
+        "Semilla",
+        "4417-0923-D7"
+      ],
+      [
+        "Entidades",
+        "ninguna registrada"
+      ]
+    ],
+    "cuerpo": [
+      "Todo el mundo empieza aquí y todo el mundo lo describe igual, que es precisamente lo que lo convirtió en la referencia del archivo. Las coordenadas del vestíbulo son el cero: las profundidades, los sectores y las distancias de cualquier otra ficha se cuentan desde esta sala.",
+      "No se ha documentado ninguna entidad. Es el único sitio del que se puede decir eso con nueve confirmaciones independientes.",
+      "Si vas a entrar por primera vez, lee antes PR-01. Una descripción sin semilla ni sector no entra en el archivo, por buena que sea."
+    ],
+    "nota": "Punto de reunión recomendado (PR-07). No es obligatorio, pero todos los mapeados coordinados salen de aquí.",
+    "firma": "Departamento de cartografía · vigente"
+  },
+  "lvl-031": {
+    "titulo": "Habitaciones de agua",
+    "desig": "LVL-031",
+    "stamp": "VERIFICADO",
+    "campos": [
+      [
+        "profundidad",
+        "201 – 388 m"
+      ],
+      [
+        "registrado",
+        "17.04"
+      ],
+      [
+        "Profundidad",
+        "201 – 388 m bajo el vestíbulo"
+      ],
+      [
+        "Primer registro",
+        "17.04 · hazmat_uri"
+      ],
+      [
+        "Confirmado por",
+        "4 exploradores independientes"
+      ],
+      [
+        "Sectores conocidos",
+        "(14, −3), (15, −3), (14, −2)"
+      ],
+      [
+        "Semilla",
+        "4417-0923-D7"
+      ],
+      [
+        "Entidades",
+        "ENT-B-14 (en disputa)"
+      ]
+    ],
+    "cuerpo": [
+      "Salas alicatadas de suelo a techo, inundadas entre 20 y 90 cm. La luz no viene de ninguna lámpara: entra por ventanales altos que no dan a ningún exterior conocido. El agua está templada y no se enfría con la profundidad.",
+      "Los accesos se abren en la banda de 200 a 390 m. Tres de los cuatro registros coinciden en que se llega desde un pozo con escalera de caracol, y no por escalera recta. El cuarto registro describe una bajada por una tarima que no se ha vuelto a localizar.",
+      "La acústica desorienta. Dos equipos informaron de pasos por delante cuando avanzaban en fila; ninguno grabó nada. Se recomienda avanzar sin separarse más de <span class=\"redact\">██████</span> metros."
+    ],
+    "nota": "Ficha bloqueada para edición. Cualquier corrección requiere una captura con semilla y sector legibles.",
+    "firma": "Revisado por el departamento de cartografía · 4 confirmaciones"
+  },
+  "lvl-044": {
+    "titulo": "El hotel que gira",
+    "desig": "LVL-044",
+    "stamp": "EN DISPUTA",
+    "campos": [
+      [
+        "profundidad",
+        "390 – 452 m"
+      ],
+      [
+        "registrado",
+        "28.04"
+      ],
+      [
+        "Profundidad",
+        "390 – 452 m (sin consenso)"
+      ],
+      [
+        "Primer registro",
+        "28.04 · p. anónimo"
+      ],
+      [
+        "Confirmado por",
+        "1 explorador"
+      ],
+      [
+        "Sectores conocidos",
+        "(−2, 7)"
+      ],
+      [
+        "Semilla",
+        "no aportada"
+      ],
+      [
+        "Entidades",
+        "ENT-C-02 (sin confirmar)"
+      ]
+    ],
+    "cuerpo": [
+      "Pasillos larguísimos con puertas a los dos lados y habitaciones casi idénticas. El informe original sostiene que el pasillo cambia de orientación cuando se recorre dos veces en el mismo sentido. Ningún otro equipo ha reproducido el efecto.",
+      "La ficha se mantiene abierta porque el resto de la descripción encaja con lo que se ha visto en la misma banda de profundidad. Se descarta el nombre vulgar hasta que haya una segunda confirmación.",
+      "Quien llegue: hacen falta dos capturas del mismo sitio con la semilla visible, tomadas por personas distintas."
+    ],
+    "nota": "Sin semilla ni sector verificables. No entra en el archivo principal hasta que haya una segunda confirmación.",
+    "firma": "Pendiente de verificación · 1 confirmación"
+  },
+  "ent-a-03": {
+    "titulo": "El de la moqueta",
+    "desig": "ENT-A-03",
+    "stamp": "CLASE A",
+    "campos": [
+      [
+        "clase",
+        "A"
+      ],
+      [
+        "primer_avistamiento",
+        "LVL-001"
+      ],
+      [
+        "Clase",
+        "A · no reacciona al explorador"
+      ],
+      [
+        "Primer avistamiento",
+        "LVL-001, sector (0, 0)"
+      ],
+      [
+        "Avistamientos",
+        "61 registrados"
+      ],
+      [
+        "Comportamiento observado",
+        "patrulla, no persigue"
+      ],
+      [
+        "Reacciona a",
+        "nada confirmado"
+      ],
+      [
+        "Distancia mínima segura",
+        "no aplica"
+      ]
+    ],
+    "cuerpo": [
+      "Se mueve en línea recta por los pasillos anchos y cambia de dirección solo en las esquinas. Sesenta y un registros coinciden en que no altera su recorrido aunque se le siga de cerca, se le ilumine o se le grite.",
+      "Es la entidad que más veces se ha documentado y la que menos consecuencias tiene. Sirve de referencia para clasificar el resto: clase A es todo lo que no cambia de conducta por tu presencia.",
+      "No se ha registrado ningún incidente. Aun así, el protocolo PR-03 se aplica igual."
+    ],
+    "nota": "Clase A no significa inofensiva. Significa que no responde a lo que hagas.",
+    "firma": "Revisado por el departamento de cartografía · 61 confirmaciones"
+  },
+  "sec-00-00": {
+    "titulo": "Sector de origen",
+    "desig": "(0, 0)",
+    "stamp": "VERIFICADO",
+    "campos": [
+      [
+        "niveles_registrados",
+        "7 de 9"
+      ],
+      [
+        "accesos",
+        "4"
+      ],
+      [
+        "cobertura",
+        "82 %"
+      ],
+      [
+        "Coordenadas",
+        "(0, 0)"
+      ],
+      [
+        "Contiene",
+        "el vestíbulo"
+      ],
+      [
+        "Niveles registrados",
+        "7 de 9"
+      ],
+      [
+        "Accesos hacia abajo",
+        "4 confirmados"
+      ],
+      [
+        "Cobertura",
+        "82 %"
+      ],
+      [
+        "Semilla",
+        "4417-0923-D7"
+      ]
+    ],
+    "cuerpo": [
+      "El sector de origen, y con diferencia el mejor cartografiado: contiene el vestíbulo y es por donde entra todo el mundo. Siete de los nueve niveles conocidos tienen al menos un tramo documentado aquí.",
+      "El 18 % restante son bolsas cerradas en la banda profunda a las que no se ha encontrado acceso desde este sector. Puede que solo se entre a ellas desde un sector vecino.",
+      "Los cuatro accesos hacia abajo confirmados están todos en el cuadrante norte. Nadie ha explicado todavía por qué."
+    ],
+    "nota": "Sector de referencia. Si una captura no cuadra con lo registrado aquí, es la captura la que está mal.",
+    "firma": "Departamento de cartografía · 82 %"
+  },
+  "pr-01": {
+    "titulo": "Verificación de hallazgos",
+    "desig": "PR-01",
+    "stamp": "OBLIGATORIO",
+    "campos": [
+      [
+        "obligatorio",
+        "SÍ"
+      ],
+      [
+        "revision",
+        "4ª"
+      ],
+      [
+        "Ámbito",
+        "todo el archivo"
+      ],
+      [
+        "Cumplimiento",
+        "obligatorio"
+      ],
+      [
+        "Última revisión",
+        "4ª"
+      ],
+      [
+        "Afecta a",
+        "niveles, entidades, sectores"
+      ]
+    ],
+    "cuerpo": [
+      "Una ficha entra en el archivo principal cuando dos personas distintas aportan una captura del mismo sitio con la semilla del mundo y las coordenadas de sector legibles en la imagen.",
+      "<strong>Sin semilla no hay ficha.</strong> Es la única regla que no admite excepciones: el mundo es el mismo para todos y por eso cualquiera puede ir a comprobarlo. Una descripción sin coordenadas no es un hallazgo, es un relato.",
+      "Las fichas en disputa se quedan a la vista, con su estado marcado. No se borran: borrarlas es perder el rastro de quién vio qué y cuándo."
+    ],
+    "nota": "Las discusiones sobre fichas no confirmadas van fuera del archivo. Aquí solo entra lo comprobado.",
+    "firma": "Departamento de cartografía · vigente"
+  }
+};
+
+  var RECENT = [
+  {
+    "d": "24.09",
+    "t": "LVL-000 · El vestíbulo",
+    "go": {
+      "id": "niveles",
+      "file": "lvl-000"
+    }
+  },
+  {
+    "d": "24.09",
+    "t": "LVL-031 · Habitaciones de agua",
+    "go": {
+      "id": "niveles",
+      "file": "lvl-031"
+    }
+  },
+  {
+    "d": "24.09",
+    "t": "LVL-044 · El hotel que gira",
+    "go": {
+      "id": "niveles",
+      "file": "lvl-044"
+    }
+  },
+  {
+    "d": "24.09",
+    "t": "ENT-A-03 · El de la moqueta",
+    "go": {
+      "id": "entidades",
+      "file": "ent-a-03"
+    }
+  },
+  {
+    "d": "24.09",
+    "t": "(0, 0) · Sector de origen",
+    "go": {
+      "id": "sectores",
+      "file": "sec-00-00"
+    }
+  },
+  {
+    "d": "24.09",
+    "t": "PR-01 · Verificación de hallazgos",
+    "go": {
+      "id": "protocolos",
+      "file": "pr-01"
+    }
+  }
+];
+
+  var ORDER = ["niveles", "entidades", "informes", "fotografias", "sectores", "protocolos"];
+
+  var pane = document.getElementById("pane");
+  var treeEl = document.getElementById("tree");
+  var pathEl = document.getElementById("path");
+  var countEl = document.getElementById("count");
+  var titleEl = document.getElementById("wtitle");
+  var bodyGrid = document.getElementById("bodyGrid");
+  var homeBtn = document.getElementById("home");
+  var backBtn = document.getElementById("back");
+  var upBtn = document.getElementById("up");
+  var viewBtns = Array.prototype.slice.call(document.querySelectorAll("[data-view]"));
+
+  var state = { id:"home", file:null, view:"icons" };
+  var hist = [];
+  var open = { niveles:true };
+  var accOpen = { niveles:true };
+
+  function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; }); }
+  function tagClass(st){ return st === "ver" ? "t-ver" : (st === "dis" ? "t-dis" : "t-sin"); }
+
+  /* ---------------- árbol jerárquico desplegable ---------------- */
+  function buildTree(){
+    var html = '<li><div class="row"><button class="twist" type="button" data-twist="__root">−</button>' +
+               '<button class="lnk" type="button" data-go="root">' + ICON.folderSm + '<span>ARCHIVO</span></button></div><ul>';
+    ORDER.forEach(function(fid){
+      var d = DATA[fid];
+      var isOpen = !!open[fid];
+      html += '<li><div class="row">' +
+              '<button class="twist" type="button" data-twist="' + fid + '" aria-expanded="' + isOpen + '">' + (isOpen ? "−" : "+") + '</button>' +
+              '<button class="lnk" type="button" data-go="' + fid + '">' + ICON.folderSm + '<span>' + esc(d.nm) + '</span></button></div>';
+      if (isOpen){
+        html += '<ul>';
+        d.rows.forEach(function(r){
+          html += '<li><div class="row"><button class="twist empty" type="button" tabindex="-1" aria-hidden="true">·</button>' +
+                  '<button class="lnk" type="button" data-open="' + r.id + '" data-in="' + fid + '">' + ICON.docSm +
+                  '<span class="mono">' + esc(r.c[0]) + '</span></button></div></li>';
+        });
+        html += '</ul>';
+      }
+      html += '</li>';
+    });
+    html += '</ul></li>';
+    treeEl.innerHTML = html;
+  }
+
+  /* ---------------- portada ---------------- */
+  function renderHome(){
+    var html = '<div class="home">' +
+      '<div class="seal mono">ARCHIVO<br>D-7<br>USO INTERNO</div>' +
+      '<div class="kicker mono">DEPARTAMENTO DE CARTOGRAFÍA</div>' +
+      '<h2>Archivo D-7</h2>' +
+      '<p class="sub mono">Registro de lo que hay ahí abajo · semilla 4417-0923-D7</p>' +
+      '<p>Todos exploramos el mismo mundo. No es un mundo por partida: es uno solo, siempre el mismo, generado a partir de una única semilla, y por eso lo que tú encuentres en el sector (14, −3) está también en el mío. Este archivo es el sitio donde se anota.</p>' +
+      '<p>Cada ficha es un sitio que alguien encontró, describió y otra persona fue a comprobar. Lo confirmado entra en el archivo principal; lo que no, se queda marcado a la vista hasta que alguien lo confirme o lo tumbe. Nada se borra.</p>' +
+      '<div class="cards">' +
+        '<button class="card" type="button" data-go="niveles"><span>' + ICON.folder + '</span><span><b>Entrar al archivo</b><small>104 niveles, 31 entidades, 2.907 fotografías indexadas.</small></span></button>' +
+        '<button class="card" type="button" data-open="lvl000" data-in="niveles"><span>' + ICON.doc + '</span><span><b>Empieza por el vestíbulo</b><small>El punto cero. Todo se mide desde aquí.</small></span></button>' +
+        '<button class="card" type="button" data-open="p01" data-in="protocolos"><span>' + ICON.doc + '</span><span><b>Cómo se añade una ficha</b><small>PR-01: sin semilla y sector legibles, no entra.</small></span></button>' +
+        '<button class="card" type="button" data-go="sectores"><span>' + ICON.folder + '</span><span><b>Mapa de sectores</b><small>Qué está cartografiado y qué sigue en blanco.</small></span></button>' +
+      '</div>' +
+      '<div class="hr"></div>' +
+      '<h3>Últimos movimientos</h3><ul class="recent">';
+    RECENT.forEach(function(r, i){
+      html += '<li><button type="button" data-recent="' + i + '"><span class="d mono">' + esc(r.d) + '</span><span class="t">' + esc(r.t) + '</span></button></li>';
+    });
+    html += '</ul></div>';
+    pane.innerHTML = html;
+    pathEl.textContent = "C:\\ARCHIVO\\INICIO";
+    countEl.innerHTML = "&nbsp;";
+    titleEl.textContent = "Archivo D-7";
+  }
+
+  function renderRoot(){
+    var html;
+    if (state.view === "details"){
+      html = '<div class="wrap"><table><thead><tr><th>Carpeta</th><th>Contenido</th><th>Fichas</th></tr></thead><tbody>';
+      DATA.root.folders.forEach(function(f){
+        html += '<tr data-go="' + f.id + '"><td>' + esc(f.nm) + '</td><td>' + esc(f.ct) +
+                '</td><td class="num">' + DATA[f.id].rows.length + ' en el índice</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    } else {
+      html = '<div class="grid">';
+      DATA.root.folders.forEach(function(f){
+        html += '<button class="item" type="button" data-go="' + f.id + '">' + ICON.folder +
+                '<span class="nm">' + esc(f.nm) + '</span><span class="ct">' + esc(f.ct) + '</span></button>';
+      });
+      html += '</div>';
+    }
+    pane.innerHTML = html;
+    countEl.textContent = DATA.root.folders.length + " objeto(s)";
+    pathEl.textContent = DATA.root.path;
+    titleEl.textContent = "Archivo D-7 — Índice general";
+  }
+
+  /* ---------------- vista lista: todo desplegable en una página ---------------- */
+  function renderList(){
+    var html = '<div class="acc">';
+    var total = 0;
+    ORDER.forEach(function(fid){
+      var d = DATA[fid];
+      var isOpen = !!accOpen[fid];
+      total += d.rows.length;
+      html += '<section><button class="head" type="button" data-acc="' + fid + '" aria-expanded="' + isOpen + '">' +
+              '<span class="tw">' + (isOpen ? "▼" : "►") + '</span><b>' + esc(d.nm) + '</b>' +
+              '<span class="ct">' + d.rows.length + '</span></button>';
+      if (isOpen){
+        html += '<ul class="list">';
+        d.rows.forEach(function(r){
+          html += '<li><button type="button" data-open="' + r.id + '" data-in="' + fid + '">' +
+                  '<span class="id mono">' + esc(r.c[0]) + '</span>' +
+                  '<span class="nm">' + esc(r.c[1]) + '</span>' +
+                  '<span class="tag ' + tagClass(r.st) + '">' + esc(r.c[r.c.length - 1]) + '</span></button></li>';
+        });
+        html += '</ul>';
+      }
+      html += '</section>';
+    });
+    html += '</div>';
+    pane.innerHTML = html;
+    countEl.textContent = total + " objeto(s) en 6 carpetas";
+    pathEl.textContent = "C:\\ARCHIVO\\ (lista completa)";
+    titleEl.textContent = "Archivo D-7 — Lista completa";
+  }
+
+  function renderFolder(id){
+    var d = DATA[id];
+    var html;
+    if (state.view === "details"){
+      html = '<div class="wrap"><table><thead><tr>';
+      d.cols.forEach(function(c){ html += '<th>' + esc(c) + '</th>'; });
+      html += '</tr></thead><tbody>';
+      d.rows.forEach(function(r){
+        html += '<tr data-open="' + r.id + '" data-in="' + id + '">';
+        r.c.forEach(function(v, i){
+          var cls = i === 0 ? 'mono num' : (i === r.c.length - 1 ? '' : 'num');
+          var val = (i === r.c.length - 1)
+            ? '<span class="tag ' + tagClass(r.st) + '">' + esc(v) + '</span>'
+            : esc(v);
+          html += '<td class="' + cls + '">' + val + '</td>';
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+    } else {
+      html = '<div class="grid">';
+      d.rows.forEach(function(r){
+        html += '<button class="item" type="button" data-open="' + r.id + '" data-in="' + id + '">' + ICON.doc +
+                '<span class="nm mono">' + esc(r.c[0]) + '</span>' +
+                '<span class="ct">' + esc(r.c[1]) + '</span></button>';
+      });
+      html += '</div>';
+    }
+    pane.innerHTML = html;
+    countEl.textContent = d.rows.length + " objeto(s)";
+    pathEl.textContent = d.path;
+    titleEl.textContent = "Archivo D-7 — " + d.nm;
+  }
+
+  function renderFile(fid){
+    var f = FILES[fid];
+    if (!f){
+      pane.innerHTML = '<div class="file"><span class="stamp">SIN DIGITALIZAR</span>' +
+        '<h2>Ficha no disponible</h2>' +
+        '<p class="desig mono">El original sigue en papel.</p>' +
+        '<p>Este expediente existe en el índice pero nadie lo ha pasado al archivo. Si has estado ahí y tienes capturas con la semilla y el sector legibles, es tuyo para escribirlo.</p></div>';
+      countEl.textContent = "1 objeto(s)";
+      titleEl.textContent = "Archivo D-7 — ficha sin digitalizar";
+      return;
+    }
+    var html = '<div class="file"><span class="stamp">' + esc(f.stamp) + '</span>' +
+               '<h2>' + esc(f.titulo) + '</h2>' +
+               '<div class="desig mono">' + esc(f.desig) + '</div><dl class="fields">';
+    f.campos.forEach(function(c){
+      html += '<dt class="mono">' + esc(c[0]) + '</dt><dd>' + esc(c[1]) + '</dd>';
+    });
+    html += '</dl>';
+    f.cuerpo.forEach(function(p){ html += '<p>' + p + '</p>'; });
+    html += '<div class="note">' + esc(f.nota) + '</div>';
+    html += '<div class="sig mono">' + esc(f.firma) + '</div></div>';
+    pane.innerHTML = html;
+    countEl.textContent = "1 objeto(s)";
+    titleEl.textContent = "Archivo D-7 — " + f.desig;
+  }
+
+  function render(){
+    var isHome = state.id === "home";
+    bodyGrid.setAttribute("data-home", isHome ? "true" : "false");
+
+    if (state.file){ renderFile(state.file); }
+    else if (isHome){ renderHome(); }
+    else if (state.id === "list"){ renderList(); }
+    else if (state.id === "root"){ renderRoot(); }
+    else { renderFolder(state.id); }
+
+    if (state.file && state.id !== "home" && DATA[state.id]){
+      var row = null;
+      DATA[state.id].rows.forEach(function(r){ if (r.id === state.file) row = r; });
+      if (row) pathEl.textContent = DATA[state.id].path + row.c[0];
+    }
+
+    buildTree();
+    Array.prototype.forEach.call(treeEl.querySelectorAll(".lnk"), function(b){
+      var g = b.getAttribute("data-go"), o = b.getAttribute("data-open");
+      var cur = state.file ? (o === state.file) : (g === state.id);
+      b.setAttribute("aria-current", cur ? "true" : "false");
+    });
+
+    homeBtn.disabled = isHome && !state.file;
+    backBtn.disabled = hist.length === 0;
+    upBtn.disabled = isHome && !state.file;
+    viewBtns.forEach(function(b){
+      var v = b.getAttribute("data-view");
+      var active = (v === "list") ? state.id === "list" : (state.view === v && state.id !== "list" && !state.file && !isHome);
+      b.setAttribute("aria-pressed", active ? "true" : "false");
+      // Iconos/Detalles solo se apagan en la portada o dentro de una ficha. Desde la vista
+      // Lista tienen que seguir vivos: son la salida de vuelta al indice.
+      b.disabled = (v !== "list") && (isHome || !!state.file);
+    });
+    pane.scrollTop = 0;
+  }
+
+  function go(next){
+    hist.push({ id:state.id, file:state.file });
+    if (next.id !== undefined) state.id = next.id;
+    state.file = next.file !== undefined ? next.file : null;
+    render();
+  }
+
+  document.addEventListener("click", function(e){
+    if (!e.target.closest) return;
+
+    var tw = e.target.closest("[data-twist]");
+    if (tw){
+      var k = tw.getAttribute("data-twist");
+      if (k !== "__root"){ open[k] = !open[k]; render(); }
+      return;
+    }
+    var ac = e.target.closest("[data-acc]");
+    if (ac){
+      var a = ac.getAttribute("data-acc");
+      accOpen[a] = !accOpen[a];
+      renderList();
+      return;
+    }
+    var rc = e.target.closest("[data-recent]");
+    if (rc){
+      var r = RECENT[parseInt(rc.getAttribute("data-recent"), 10)];
+      if (r) go({ id:r.go.id, file:r.go.file });
+      return;
+    }
+    var goEl = e.target.closest("[data-go]");
+    if (goEl){ go({ id: goEl.getAttribute("data-go"), file: null }); return; }
+    var openEl = e.target.closest("[data-open]");
+    if (openEl){
+      go({ id: openEl.getAttribute("data-in") || state.id, file: openEl.getAttribute("data-open") });
+    }
+  });
+
+  homeBtn.addEventListener("click", function(){ go({ id:"home", file:null }); });
+
+  backBtn.addEventListener("click", function(){
+    var prev = hist.pop();
+    if (!prev) return;
+    state.id = prev.id; state.file = prev.file;
+    render();
+  });
+
+  upBtn.addEventListener("click", function(){
+    if (state.file) go({ id: state.id, file: null });
+    else if (state.id === "root" || state.id === "list") go({ id:"home", file:null });
+    else go({ id: "root", file: null });
+  });
+
+  viewBtns.forEach(function(b){
+    b.addEventListener("click", function(){
+      var v = b.getAttribute("data-view");
+      if (v === "list"){ if (state.id !== "list") go({ id:"list", file:null }); return; }
+      state.view = v;
+      // Si venimos de la lista o de una ficha, el modo de vista no tiene donde aplicarse:
+      // se sale al indice general, que es lo que el usuario espera ver al pulsarlos.
+      if (state.id === "list" || state.file) go({ id:"root", file:null });
+      else render();
+    });
+  });
+
+  function tick(){
+    var d = new Date();
+    document.getElementById("clock").textContent =
+      String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  render();
+})();
+</script>
