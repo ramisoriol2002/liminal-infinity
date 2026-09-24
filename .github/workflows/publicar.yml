@@ -1,0 +1,39 @@
+name: Publicar el archivo
+
+# Se ejecuta en cada commit a main y regenera index.html a partir de fichas/,
+# despues publica el sitio en GitHub Pages. No hay nada que hacer a mano.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Historial completo: el script saca de ahi las fechas de
+          # "ultimos movimientos" de la portada.
+          fetch-depth: 0
+
+      - name: Generar index.html
+        run: python3 build/build.py
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
